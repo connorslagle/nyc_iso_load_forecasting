@@ -25,16 +25,19 @@ def unzip_archive(zip_file_path, extract_path):
     except BaseException:
         pass
 
-def combine_csvs(csvs_dir):
+def combine_csvs(csvs_dir, suffix, save_df=False):
+    csv_list = os.listdir(csvs_dir)
+    first_file, last_file = csv_list[0].split('.csv')[0], csv_list[-1].split('.csv')[0]
+
+    df = pd.DataFrame()
+    for f in csv_list:
+        if f.endswith('.csv'):
+            f_df = pd.read_csv(f'{csvs_dir}{f}')
+            df = df.append(f_df)
+    if save_df:
+        df.to_csv(f'data/{first_file}_{last_file}_{suffix}.csv')
+    return df
 
 
 if __name__ == '__main__':
-    date_lst = []
-    for y in range(2002, 2022):
-        for m in range(1, 13):
-            if m < 10:
-                m_str = '0' + str(m)
-            else:
-                m_str = str(m)
-            date_lst.append(str(y)+m_str+'01')
-
+    pdb.set_trace()
